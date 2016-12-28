@@ -1,0 +1,1 @@
+import CookieStorage from '../src'
