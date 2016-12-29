@@ -44,3 +44,14 @@ test('removes cookie keys', async t => {
   t.is(await storage.getItem('number of the beast'), undefined)
   t.deepEqual(await storage.getAllKeys(), ['another brick'])
 })
+
+test('clears cookie storage', async t => {
+  const storage = new CookieStorage()
+
+  await storage.setItem('one', 1)
+  await storage.setItem('two', 2)
+  await storage.setItem('three', 3)
+  await storage.clear()
+
+  t.deepEqual(await storage.getAllKeys(), [])
+})

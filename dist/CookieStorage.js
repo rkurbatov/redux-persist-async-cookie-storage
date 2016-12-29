@@ -201,6 +201,56 @@ var CookieStorage = exports.CookieStorage = function () {
         };
       }());
     }
+  }, {
+    key: 'clear',
+    value: function clear(cb) {
+      var _this5 = this;
+
+      return new _promise2.default(function () {
+        var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(resolve, reject) {
+          var keys;
+          return _regenerator2.default.wrap(function _callee3$(_context3) {
+            while (1) {
+              switch (_context3.prev = _context3.next) {
+                case 0:
+                  _context3.prev = 0;
+                  _context3.next = 3;
+                  return _this5.getAllKeys();
+
+                case 3:
+                  keys = _context3.sent;
+
+                  keys.forEach(function (key) {
+                    return _this5.cookiesLib.expire(_this5.keyPrefix + key);
+                  });
+                  _this5.cookiesLib.expire(_this5.indexKey);
+                  nextTick(function () {
+                    cb && cb(null);
+                    resolve();
+                  });
+                  _context3.next = 13;
+                  break;
+
+                case 9:
+                  _context3.prev = 9;
+                  _context3.t0 = _context3['catch'](0);
+
+                  cb && cb(_context3.t0);
+                  reject(_context3.t0);
+
+                case 13:
+                case 'end':
+                  return _context3.stop();
+              }
+            }
+          }, _callee3, _this5, [[0, 9]]);
+        }));
+
+        return function (_x6, _x7) {
+          return _ref3.apply(this, arguments);
+        };
+      }());
+    }
   }]);
   return CookieStorage;
 }();

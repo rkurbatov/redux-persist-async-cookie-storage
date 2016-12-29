@@ -79,6 +79,23 @@ export class CookieStorage {
       }
     })
   }
+
+  clear (cb) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const keys = await this.getAllKeys()
+        keys.forEach(key => this.cookiesLib.expire(this.keyPrefix + key))
+        this.cookiesLib.expire(this.indexKey)
+        nextTick(() => {
+          cb && cb(null)
+          resolve()
+        })
+      } catch (err) {
+        cb && cb(err)
+        reject(err)
+      }
+    })
+  }
 }
 
 class FakeCookies {
