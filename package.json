@@ -1,6 +1,6 @@
 {
   "name": "redux-persist-async-cookie-storage",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "async cookie storage for redux-persist",
   "main": "dist/index.js",
   "repository": {
