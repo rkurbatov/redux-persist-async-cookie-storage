@@ -17,11 +17,11 @@ export class CookieStorage {
         const cookie = this.cookiesLib.get(this.indexKey)
         const result = cookie ? JSON.parse(cookie) : []
         nextTick(() => {
-          cb && cb(null, result)
+          typeof cb === 'function' && cb(null, result)
           resolve(result)
         })
       } catch (err) {
-        cb && cb(err)
+        typeof cb === 'function' && cb(err)
         reject(err)
       }
     })
@@ -32,31 +32,35 @@ export class CookieStorage {
       try {
         const value = this.cookiesLib.get(this.keyPrefix + key)
         nextTick(() => {
-          cb && cb(null, value)
+          typeof cb === 'function' && cb(null, value)
           resolve(value)
         })
       } catch (err) {
-        cb && cb(err)
+        typeof cb === 'function' && cb(err)
         reject(err)
       }
     })
   }
 
-  setItem (key, value, cb) {
+  setItem (key, value, options, cb) {
+    if (typeof options === 'function') {
+      cb = options;
+      options = {}
+    }
     return new Promise(async (resolve, reject) => {
       try {
-        this.cookiesLib.set(this.keyPrefix + key, value)
+        this.cookiesLib.set(this.keyPrefix + key, value, options)
         const keys = await this.getAllKeys()
         if (!keys.includes(key)) {
           keys.push(key)
           this.cookiesLib.set(this.indexKey, JSON.stringify(keys))
         }
         nextTick(() => {
-          cb && cb(null)
+          typeof cb === 'function' && cb(null)
           resolve()
         })
       } catch (err) {
-        cb && cb(err)
+        typeof cb === 'function' && cb(err)
         reject(err)
       }
     })
@@ -70,11 +74,11 @@ export class CookieStorage {
         keys = keys.filter(k => k !== key)
         this.cookiesLib.set(this.indexKey, JSON.stringify(keys))
         nextTick(() => {
-          cb && cb(null)
+          typeof cb === 'function' && cb(null)
           resolve()
         })
       } catch (err) {
-        cb && cb(err)
+        typeof cb === 'function' && cb(err)
         reject(err)
       }
     })
@@ -87,11 +91,11 @@ export class CookieStorage {
         keys.forEach(key => this.cookiesLib.expire(this.keyPrefix + key))
         this.cookiesLib.expire(this.indexKey)
         nextTick(() => {
-          cb && cb(null)
+          typeof cb === 'function' && cb(null)
           resolve()
         })
       } catch (err) {
-        cb && cb(err)
+        typeof cb === 'function' && cb(err)
         reject(err)
       }
     })

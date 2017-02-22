@@ -67,12 +67,12 @@ var CookieStorage = exports.CookieStorage = function () {
             var cookie = _this.cookiesLib.get(_this.indexKey);
             var result = cookie ? JSON.parse(cookie) : [];
             nextTick(function () {
-              cb && cb(null, result);
+              typeof cb === 'function' && cb(null, result);
               resolve(result);
             });
           })();
         } catch (err) {
-          cb && cb(err);
+          typeof cb === 'function' && cb(err);
           reject(err);
         }
       });
@@ -87,21 +87,25 @@ var CookieStorage = exports.CookieStorage = function () {
           (function () {
             var value = _this2.cookiesLib.get(_this2.keyPrefix + key);
             nextTick(function () {
-              cb && cb(null, value);
+              typeof cb === 'function' && cb(null, value);
               resolve(value);
             });
           })();
         } catch (err) {
-          cb && cb(err);
+          typeof cb === 'function' && cb(err);
           reject(err);
         }
       });
     }
   }, {
     key: 'setItem',
-    value: function setItem(key, value, cb) {
+    value: function setItem(key, value, options, cb) {
       var _this3 = this;
 
+      if (typeof options === 'function') {
+        cb = options;
+        options = {};
+      }
       return new _promise2.default(function () {
         var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(resolve, reject) {
           var keys;
@@ -111,7 +115,7 @@ var CookieStorage = exports.CookieStorage = function () {
                 case 0:
                   _context.prev = 0;
 
-                  _this3.cookiesLib.set(_this3.keyPrefix + key, value);
+                  _this3.cookiesLib.set(_this3.keyPrefix + key, value, options);
                   _context.next = 4;
                   return _this3.getAllKeys();
 
@@ -123,7 +127,7 @@ var CookieStorage = exports.CookieStorage = function () {
                     _this3.cookiesLib.set(_this3.indexKey, (0, _stringify2.default)(keys));
                   }
                   nextTick(function () {
-                    cb && cb(null);
+                    typeof cb === 'function' && cb(null);
                     resolve();
                   });
                   _context.next = 13;
@@ -133,7 +137,7 @@ var CookieStorage = exports.CookieStorage = function () {
                   _context.prev = 9;
                   _context.t0 = _context['catch'](0);
 
-                  cb && cb(_context.t0);
+                  typeof cb === 'function' && cb(_context.t0);
                   reject(_context.t0);
 
                 case 13:
@@ -175,7 +179,7 @@ var CookieStorage = exports.CookieStorage = function () {
                   });
                   _this4.cookiesLib.set(_this4.indexKey, (0, _stringify2.default)(keys));
                   nextTick(function () {
-                    cb && cb(null);
+                    typeof cb === 'function' && cb(null);
                     resolve();
                   });
                   _context2.next = 14;
@@ -185,7 +189,7 @@ var CookieStorage = exports.CookieStorage = function () {
                   _context2.prev = 10;
                   _context2.t0 = _context2['catch'](0);
 
-                  cb && cb(_context2.t0);
+                  typeof cb === 'function' && cb(_context2.t0);
                   reject(_context2.t0);
 
                 case 14:
@@ -225,7 +229,7 @@ var CookieStorage = exports.CookieStorage = function () {
                   });
                   _this5.cookiesLib.expire(_this5.indexKey);
                   nextTick(function () {
-                    cb && cb(null);
+                    typeof cb === 'function' && cb(null);
                     resolve();
                   });
                   _context3.next = 13;
@@ -235,7 +239,7 @@ var CookieStorage = exports.CookieStorage = function () {
                   _context3.prev = 9;
                   _context3.t0 = _context3['catch'](0);
 
-                  cb && cb(_context3.t0);
+                  typeof cb === 'function' && cb(_context3.t0);
                   reject(_context3.t0);
 
                 case 13:
