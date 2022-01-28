@@ -21,10 +21,6 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-var _promise = require('babel-runtime/core-js/promise');
-
-var _promise2 = _interopRequireDefault(_promise);
-
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -33,9 +29,9 @@ var _createClass2 = require('babel-runtime/helpers/createClass');
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
-var _setImmediate2 = require('babel-runtime/core-js/set-immediate');
+var _promise = require('babel-runtime/core-js/promise');
 
-var _setImmediate3 = _interopRequireDefault(_setImmediate2);
+var _promise2 = _interopRequireDefault(_promise);
 
 var _cookiesJs = require('cookies-js');
 
@@ -43,8 +39,9 @@ var _cookiesJs2 = _interopRequireDefault(_cookiesJs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var genericSetImmediate = typeof _setImmediate3.default === 'undefined' ? global.setImmediate : _setImmediate3.default;
-var nextTick = process && process.nextTick ? process.nextTick : genericSetImmediate;
+var nextTick = function nextTick(f) {
+  return _promise2.default.resolve().then(f);
+};
 
 var CookieStorage = exports.CookieStorage = function () {
   function CookieStorage() {
