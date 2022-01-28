@@ -1,7 +1,6 @@
 import Cookies from 'cookies-js'
 
-const genericSetImmediate = typeof setImmediate === 'undefined' ? global.setImmediate : setImmediate
-const nextTick = process && process.nextTick ? process.nextTick : genericSetImmediate
+const nextTick = f => Promise.resolve().then(f)
 
 export class CookieStorage {
 
